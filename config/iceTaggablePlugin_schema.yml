@@ -1,0 +1,30 @@
+connection: propel
+noXsd: false
+defaultIdMethod: native
+package: plugins.iceTaggablePlugin.lib.model
+encoding: utf8
+
+classes:
+  Tag:
+    phpName: iceModelTag
+    columns:
+      id:  ~
+      name:              { type: varchar, size: 128, primaryString: true }
+      slug:              { type: varchar, size: 255 }
+      is_triple:         { type: boolean, default: false }
+      triple_namespace:  { type: varchar, size: 128 }
+      triple_key:        { type: varchar, size: 128 }
+      triple_value:      { type: varchar, size: 128 }
+    indexes:
+      tag_I_1: [name]
+      tag_I_2: [triple_namespace, triple_key]
+
+  Tagging:
+    phpName: iceModelTagging
+    columns:
+      id:  ~
+      tag_id:          { type: integer, required: true, foreignClass: iceModelTag, foreignReference: id, onDelete: CASCADE }
+      taggable_model:  { type: varchar, size: 50 }
+      taggable_id:     { type: integer }
+    indexes:
+      tagging_I_1: [taggable_model, taggable_id]
